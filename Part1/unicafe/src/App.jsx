@@ -12,7 +12,7 @@ const Display = ({text, value}) => {
   )
 }
 
-const DisplayStatistics = ({good, neutral, bad}) => {
+const Statistics = ({good, neutral, bad}) => {
   const all = good + neutral + bad
   const average = (good * 1 + neutral * 0 + bad * -1) / all
   const positive = (good / all) * 100 + ' %'
@@ -42,7 +42,7 @@ const App = () => {
       <Display text='good' value={good}/>
       <Display text='neutral' value={neutral}/>
       <Display text='bad' value={bad}/>
-      <DisplayStatistics good={good} neutral={neutral} bad={bad} />
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
