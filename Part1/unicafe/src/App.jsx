@@ -6,12 +6,6 @@ const Button = ({handler, what}) => {
   )
 }
 
-const Display = ({text, value}) => {
-  return (
-    <p>{text} {value}</p>
-  )
-}
-
 const Statistics = ({good, neutral, bad}) => {
   const all = good + neutral + bad
   const average = (good * 1 + neutral * 0 + bad * -1) / all
@@ -19,9 +13,10 @@ const Statistics = ({good, neutral, bad}) => {
 
   const StatisticLine = ({text, value}) => {
     return (
-      <div>
-        <p>{text} {value}</p>
-      </div>
+      <tr>
+        <td>{text}</td>
+        <td>{value}</td>
+      </tr>
     )
   }
 
@@ -33,11 +28,16 @@ const Statistics = ({good, neutral, bad}) => {
     )
   }
     return (
-      <div>
-        <StatisticLine text='all' value={all} />
-        <StatisticLine text='average' value={average} />
-        <StatisticLine text='positive' value={positive} />
-      </div>
+      <table>
+        <tbody>
+          <StatisticLine text='good' value={good}/>
+          <StatisticLine text='neutral' value={neutral}/>
+          <StatisticLine text='bad' value={bad}/>
+          <StatisticLine text='all' value={all} />
+          <StatisticLine text='average' value={average} />
+          <StatisticLine text='positive' value={positive} />
+        </tbody>
+      </table>
     )
 }
 
@@ -54,9 +54,6 @@ const App = () => {
       <Button handler={() => setNeutral(neutral + 1)} what='neutral'/>
       <Button handler={() => setBad(bad + 1)} what='bad'/>
       <h1>statistics</h1>
-      <Display text='good' value={good}/>
-      <Display text='neutral' value={neutral}/>
-      <Display text='bad' value={bad}/>
       <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
