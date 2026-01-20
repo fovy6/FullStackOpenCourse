@@ -9,6 +9,7 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
+
     const nameObject = {
       name: newName
     }
@@ -17,9 +18,12 @@ const App = () => {
   }
 
   const handleNameAddition = (event) => {
-    event.preventDefault()
     setNewName(event.target.value)
   }
+
+  const duplicate = persons.find(person => person.name === newName)
+  
+  const showAlert = duplicate ? alert(`${newName} is already added to phonebook`) : false
 
   return (
     <div>
@@ -31,7 +35,7 @@ const App = () => {
             onChange={handleNameAddition}
           />
         <div>
-            <button type="submit">
+            <button type="submit" onClick={() => {showAlert}}>
               add
             </button>
         </div>
