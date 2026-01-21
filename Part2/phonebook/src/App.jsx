@@ -1,25 +1,35 @@
 import { useState } from 'react'
-import Name from './components/Name'
+import PersonDetails from './components/PersonDetails'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
-  ]) 
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
+  ])
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
-  const addName = (event) => {
+  const addPerson = (event) => {
     event.preventDefault()
 
-    const nameObject = {
-      name: newName
+    const personObject = {
+      name: newName,
+      number: newNumber,
+      id: persons.length + 1
     }
-    setPersons(persons.concat(nameObject))
+    setPersons(persons.concat(personObject))
     setNewName('')
+    setNewNumber('')
   }
 
   const handleNameAddition = (event) => {
     setNewName(event.target.value)
   }
+  const handleNumberAddition = (event) => (
+    setNewNumber(event.target.value)
+  )
 
   const duplicate = persons.find(person => person.name === newName)
   
@@ -28,12 +38,19 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addName}>
-          name: 
-          <input 
+      <form onSubmit={addPerson}>
+        <div>
+          name: <input 
             value={newName} 
             onChange={handleNameAddition}
           />
+        </div>
+        <div>
+          number: <input
+            value={newNumber}
+            onChange={handleNumberAddition}
+          />
+        </div>
         <div>
             <button type="submit" onClick={() => {showAlert}}>
               add
@@ -42,7 +59,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       {persons.map(person =>
-        <Name key={person.name} person={person}/>
+        <PersonDetails key={person.id} person={person}/>
       )}
     </div>
   )
