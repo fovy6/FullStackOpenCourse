@@ -24,8 +24,7 @@ const App = () => {
 
     const personObject = {
       name: newName,
-      number: newNumber,
-      id: persons.length + 1
+      number: newNumber
     }
 
     personService
@@ -62,7 +61,7 @@ const App = () => {
       <h3>add a new</h3>
       <PersonForm newName={newName} newNumber={newNumber} handleNameAddition={handleNameAddition} handleNumberAddition={handleNumberAddition} addPerson={addPerson} showAlert={showAlert} />
       <h3>Numbers</h3>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} onDelete={(id) => setPersons(persons.filter(p => p.id !== id))} />
     </div>
   )
 }

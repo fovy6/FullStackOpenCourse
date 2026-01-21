@@ -1,3 +1,3 @@
-const PersonDetails = ({ person }) => (<span>{person.name} {person.number}<br /></span>)
+const PersonDetails = ({ person }) => (<span>{person.name} {person.number}</span>)
 
 export default PersonDetails
