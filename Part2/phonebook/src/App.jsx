@@ -3,12 +3,14 @@ import personService from './services/persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterPerson, setFilterPerson] = useState('')
+  const [alertMessage, setAlertMessage] = useState(null)
 
   const hook = () => {
     personService.getAll()
@@ -23,6 +25,10 @@ const App = () => {
     personService
       .update(id, personObject)
       .then(returnedPerson => {
+        setAlertMessage(`Updated ${returnedPerson.name}'s number`)
+        setTimeout(() => {
+          setAlertMessage(null)
+        }, 5000)
         setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
       })
     }
@@ -45,6 +51,10 @@ const App = () => {
     personService
       .create(personObject)
       .then(returnedPerson => {
+        setAlertMessage(`Added ${returnedPerson.name}`)
+        setTimeout(() => {
+          setAlertMessage(null)
+        }, 5000)
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
@@ -68,6 +78,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={alertMessage} />
       <Filter filterPerson={filterPerson} handleFilter={handleFilter} />
       <h3>add a new</h3>
       <PersonForm newName={newName} newNumber={newNumber} handleNameAddition={handleNameAddition} handleNumberAddition={handleNumberAddition} addPerson={addPerson} />
