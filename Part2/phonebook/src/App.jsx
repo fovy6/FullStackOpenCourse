@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import personService from './services/persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -19,8 +18,24 @@ const App = () => {
   }
   useEffect(hook, [])
 
+  const handleUpdateNumber = (id, personObject) => {
+  if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+    personService
+      .update(id, personObject)
+      .then(returnedPerson => {
+        setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+      })
+    }
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
+
+    const duplicatePerson= persons.find(person => person.name === newName)
+    if(duplicatePerson) {
+      handleUpdateNumber(duplicatePerson.id, { ...duplicatePerson, number: newNumber })
+      return
+    }
 
     const personObject = {
       name: newName,
@@ -50,16 +65,12 @@ const App = () => {
     person.name.toLowerCase().includes(filterPerson.toLowerCase())
   )
 
-  const duplicate = persons.find(person => person.name === newName)
-  
-  const showAlert = duplicate ? alert(`${newName} is already added to phonebook`) : false
-
   return (
     <div>
       <h2>Phonebook</h2>
       <Filter filterPerson={filterPerson} handleFilter={handleFilter} />
       <h3>add a new</h3>
-      <PersonForm newName={newName} newNumber={newNumber} handleNameAddition={handleNameAddition} handleNumberAddition={handleNumberAddition} addPerson={addPerson} showAlert={showAlert} />
+      <PersonForm newName={newName} newNumber={newNumber} handleNameAddition={handleNameAddition} handleNumberAddition={handleNumberAddition} addPerson={addPerson} />
       <h3>Numbers</h3>
       <Persons personsToShow={personsToShow} onDelete={(id) => setPersons(persons.filter(p => p.id !== id))} />
     </div>

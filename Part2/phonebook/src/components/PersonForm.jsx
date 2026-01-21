@@ -13,7 +13,7 @@ const PersonForm = ({ addPerson, newName, handleNameAddition, newNumber, handleN
           />
         </div>
         <div>
-            <button type="submit" onClick={() => {showAlert}}>
+            <button type="submit">
               add
             </button>
         </div>
