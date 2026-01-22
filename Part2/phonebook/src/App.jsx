@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filterPerson, setFilterPerson] = useState('')
   const [alertMessage, setAlertMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const hook = () => {
     personService.getAll()
@@ -30,6 +31,13 @@ const App = () => {
           setAlertMessage(null)
         }, 5000)
         setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+      })
+      .catch(error => {
+        setErrorMessage(`the person '${personObject.name}' was already deleted from server`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        setPersons(persons.filter(p => p.id !== id))
       })
     }
   }
@@ -78,7 +86,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={alertMessage} />
+      <Notification alertMessage={alertMessage} errorMessage={errorMessage}/>
       <Filter filterPerson={filterPerson} handleFilter={handleFilter} />
       <h3>add a new</h3>
       <PersonForm newName={newName} newNumber={newNumber} handleNameAddition={handleNameAddition} handleNumberAddition={handleNumberAddition} addPerson={addPerson} />
