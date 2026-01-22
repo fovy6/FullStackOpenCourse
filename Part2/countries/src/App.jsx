@@ -16,11 +16,9 @@ const App = () => {
   }, []) 
 
   const handleChange = (event) => {
-    console.log(event.target.value)
     setValue(event.target.value)
 
     const filterCountries = allCountries.filter(country => country.name.common.toLowerCase().includes(event.target.value.toLowerCase()))
-    console.log(filterCountries)
     setCountries(filterCountries)
   }
   
@@ -30,7 +28,7 @@ const App = () => {
        value={value}
        onChange={handleChange}
       />
-      <CountryList countries={countries} />
+      <CountryList countries={countries} setCountries={setCountries} />
     </div>
   )
 }
