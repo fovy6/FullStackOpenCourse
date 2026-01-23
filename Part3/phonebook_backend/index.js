@@ -62,7 +62,13 @@ app.post('/api/persons', (request, response) => {
     return response.status(400).json({ 
       error: 'Name or number is missing.' 
     })
-  }
+    }
+    if (persons.find(person => person.name === body.name)) {
+        return response.status(400).json({ 
+          error: 'Name must be unique.' 
+        })
+    }
+    
     const newID = Math.floor(Math.random() * 10000)
     const newPerson = {
         id: newID.toString(),
