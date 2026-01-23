@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 
-const persons = [
+let persons = [
     { 
       "id": "1",
       "name": "Arto Hellas", 
@@ -37,6 +37,19 @@ app.get('/api/persons/:id', (request, response) => {
     } else {
         response.statusMessage = "This person does not exist in the phonebook.";
         response.status(404).end()
+    }
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+    const id = request.params.id
+    const person = persons.find(person => person.id === id)
+    if (person) {
+        persons = persons.filter(person => person.id !== id)
+        response.statusMessage = "Person deleted successfully.";
+        response.status(204).end()
+    } else {
+        response.statusMessage = "This person has already been deleted.";
+        response.status(204).end()
     }
 })
 
