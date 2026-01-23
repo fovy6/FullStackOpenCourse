@@ -28,6 +28,18 @@ app.get('/api/persons', (request, response) => {
   response.json(persons)
 })
 
+app.get('/api/persons/:id', (request, response) => {
+    const id = request.params.id
+    const person = persons.find(person => person.id === id)
+    
+    if (person) {
+        response.json(person)
+    } else {
+        response.statusMessage = "This person does not exist in the phonebook.";
+        response.status(404).end()
+    }
+})
+
 app.get('/info', (request, response) => {
     const number_of_persons = persons.length
     const date = new Date()
