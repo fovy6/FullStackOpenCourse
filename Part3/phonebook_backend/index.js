@@ -20,9 +20,7 @@ app.get('/api/persons', (request, response, next) => {
         .then(persons => {
             response.json(persons)
         })
-        .catch(error => {
-            next(error)
-        })
+        .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -36,9 +34,7 @@ app.get('/api/persons/:id', (request, response, next) => {
             response.status(404).end()
         }
     })
-    .catch(error => {
-        next(error)
-    })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
@@ -49,17 +45,15 @@ app.delete('/api/persons/:id', (request, response, next) => {
         response.statusMessage = "Person successfully deleted."
         response.status(204).end()
     })
-    .catch(error => {
-        next(error)
-    })
+    .catch(error => next(error))
 })
 
 app.post('/api/persons', (request, response, next) => {
     const body = request.body
 
-    if (!body.name || !body.number) (
-        next(error) 
-    )
+    if (!body.name || !body.number) {
+        return next(error) 
+    }
     
     const newID = Math.floor(Math.random() * 10000)
     const newPerson = new Person({
@@ -71,6 +65,27 @@ app.post('/api/persons', (request, response, next) => {
     newPerson.save().then(savedPerson => {
         response.json(savedPerson)
     })
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+    const { name, number } = request.body
+    const id = request.params.id
+
+    Person.findById(id)
+    .then(person => {
+        if (!person) {
+            response.statusMessage = "Person not found."
+            return response.status(404).end()
+        }
+
+        person.name = name
+        person.number = number
+
+        return person.save().then(updatedPerson => {
+            response.json(updatedPerson)
+        })
+    })
+    .catch(error => next(error))
 })
 
 app.get('/info', async (request, response, next) => {
