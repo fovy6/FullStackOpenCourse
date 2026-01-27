@@ -26,26 +26,36 @@ app.get('/api/persons/:id', (request, response) => {
     Person
     .findById(id)
     .then(person => {
-        response.json(person)
+        if (person) {
+            response.json(person)
+        } else {
+            response.statusMessage = "No person found with this ID."
+            response.status(404).end()
+        }
     })
     .catch(error => {
         console.log(error)
-        response.statusMessage = "This person does not exist in the phonebook.";
-        response.status(404).end()
+        response.status(400).send({ error: 'Malformatted id' })
     })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
     const id = request.params.id
-    const person = persons.find(person => person.id === id)
-    if (person) {
-        persons = persons.filter(person => person.id !== id)
-        response.statusMessage = "Person deleted successfully.";
-        response.status(204).end()
-    } else {
-        response.statusMessage = "This person has already been deleted.";
-        response.status(204).end()
-    }
+    Person
+    .findByIdAndDelete(id)
+    .then(person => {
+        if (person) {
+            response.statusMessage = "Person successfully deleted."
+            response.status(204).end()
+        } else {
+            response.statusMessage = "No person found with this ID."
+            response.status(404).end()
+        } 
+    })
+    .catch(error => {
+        console.log(error)
+        response.status(400).send({ error: 'Malformatted id' })
+    })
 })
 
 app.post('/api/persons', (request, response) => {
