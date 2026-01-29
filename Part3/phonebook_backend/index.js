@@ -51,10 +51,6 @@ app.delete('/api/persons/:id', (request, response, next) => {
 
 app.post('/api/persons', (request, response, next) => {
     const body = request.body
-
-    if (!body.name || !body.number) {
-        return response.status(400).json({ error: 'Name and number are required' })    
-    }
     
     const newID = Math.floor(Math.random() * 10000)
     const newPerson = new Person({
@@ -118,7 +114,7 @@ const errorHandler = (error, request, response, next) => {
         return response.status(400).send({ error: 'Malformatted id' })
     } else if (error.name === 'ValidationError') {
         console.log('ValidationError:', error.message)
-        return response.status(300).send({ error: error.message })
+        return response.status(400).send({ error: error.message })
     } else if (error.name === 'ReferenceError') {
         return response.status(400).send({ error: 'Missing name or number' })
     }
