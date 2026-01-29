@@ -1,6 +1,5 @@
 const Notification = ({ alertMessage, errorMessage }) => {
-    const notificationStyle = {
-        color: 'green',
+    const baseStyle = {
         background: 'lightgrey',
         fontSize: 20,
         borderStyle: 'solid',
@@ -8,33 +7,24 @@ const Notification = ({ alertMessage, errorMessage }) => {
         padding: 10,
         marginBottom: 10,
     }
-    const errorStyle = {
-        color: 'red',
-        background: 'lightgrey',
-        fontSize: 20,
-        borderStyle: 'solid',
-        borderRadius: 5,
-        padding: 10,
-        marginBottom: 10,
-    }
-
-    if (alertMessage !== null) {
+    
+    if (errorMessage) {
         return (
-            <div style={notificationStyle}>
-                {alertMessage}
-            </div>
-        )
-    }
-    if (errorMessage !== null) {
-        return (
-            <div style={errorStyle}>
+            <div style={{...baseStyle, color: 'red'}}>
                 {errorMessage}
             </div>
         )
     }
-    if (alertMessage && errorMessage === null) {
-        return null
+    if (alertMessage) {
+        return (
+            <div style={{...baseStyle, color: 'green'}}>
+                {alertMessage}
+            </div>
+        )
     }
+    
+    
+    return null
 }
 
 export default Notification

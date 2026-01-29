@@ -53,7 +53,7 @@ app.post('/api/persons', (request, response, next) => {
     const body = request.body
 
     if (!body.name || !body.number) {
-        return next(error) 
+        return response.status(400).json({ error: 'Name and number are required' })    
     }
     
     const newID = Math.floor(Math.random() * 10000)
@@ -63,9 +63,11 @@ app.post('/api/persons', (request, response, next) => {
         number: body.number
     })
     
-    newPerson.save().then(savedPerson => {
+    newPerson.save()
+    .then(savedPerson => {
         response.json(savedPerson)
     })
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -114,6 +116,9 @@ const errorHandler = (error, request, response, next) => {
 
     if (error.name === 'CastError') {
         return response.status(400).send({ error: 'Malformatted id' })
+    } else if (error.name === 'ValidationError') {
+        console.log('ValidationError:', error.message)
+        return response.status(300).send({ error: error.message })
     } else if (error.name === 'ReferenceError') {
         return response.status(400).send({ error: 'Missing name or number' })
     }

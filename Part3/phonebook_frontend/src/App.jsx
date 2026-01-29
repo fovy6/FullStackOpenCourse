@@ -60,12 +60,18 @@ const App = () => {
       .create(personObject)
       .then(returnedPerson => {
         setAlertMessage(`Added ${returnedPerson.name}`)
+          setTimeout(() => {
+            setAlertMessage(null)
+          }, 5000)
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+      })
+      .catch(error => {
+        setErrorMessage(error.response.data.error)
         setTimeout(() => {
-          setAlertMessage(null)
+          setErrorMessage(null)
         }, 5000)
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
       })
   }
 
