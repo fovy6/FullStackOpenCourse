@@ -32,7 +32,7 @@ const App = () => {
         }, 5000)
         setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
       })
-      .catch(error => {
+      .catch(() => {
         setErrorMessage(`the person '${personObject.name}' was already deleted from server`)
         setTimeout(() => {
           setErrorMessage(null)
