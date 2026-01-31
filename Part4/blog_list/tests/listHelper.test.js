@@ -3,9 +3,7 @@ const assert = require('node:assert')
 
 const listHelper = require('../utils/list_helper')
 
-describe('total likes', () => {
-
-  const emptyList = []
+const emptyBlogList = []
 
   const listWithOneBlog = [
     {
@@ -69,8 +67,15 @@ describe('total likes', () => {
     }  
   ]
 
+test('dummy returns one', () => {
+  const result = listHelper.dummy(emptyBlogList)
+  assert.strictEqual(result, 1)
+})
+
+describe('total likes', () => {
+
   test('of empty list is zero', () => {
-    const result = listHelper.totalLikes(emptyList)
+    const result = listHelper.totalLikes(emptyBlogList)
     assert.strictEqual(result, 0)
   })
 
@@ -82,5 +87,22 @@ describe('total likes', () => {
   test('of a bigger list is calculated right', () => {
     const result = listHelper.totalLikes(blogs)
     assert.strictEqual(result, 36)
+  })
+})
+
+describe('favorite blog', () => {
+  test('of empty list is zero', () => {
+    const result = listHelper.favoriteBlog(emptyBlogList)
+    assert.deepStrictEqual(result, [])
+  }) 
+
+  test('when list has only one blog, equals that blog', () => {
+    const result = listHelper.favoriteBlog(listWithOneBlog)
+    assert.deepStrictEqual(result, listWithOneBlog[0])
+  })
+
+  test('of a bigger list is found right', () => {
+    const result = listHelper.favoriteBlog(blogs)
+    assert.deepStrictEqual(result, blogs[2])
   })
 })
