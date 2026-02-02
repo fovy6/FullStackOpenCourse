@@ -113,7 +113,7 @@ describe('most blogs', () => {
     assert.deepStrictEqual(result, undefined)
   })
 
-  test('when list has only one blog, equals that author', () => {
+  test('when list has only one blog, equals that author and total blogs', () => {
     const result = listHelper.mostBlogs(listWithOneBlog)
     assert.deepStrictEqual(result, {author: 'Edsger W. Dijkstra', blogs: 1})
   })
@@ -121,5 +121,23 @@ describe('most blogs', () => {
   test('of a bigger list is found right', () => {
     const result = listHelper.mostBlogs(blogs)
     assert.deepStrictEqual(result, {author: 'Robert C. Martin', blogs: 3})
+  })
+})
+
+describe('most likes', () => {
+  test('of empty list is zero', () => {
+    const result = listHelper.mostLikes(emptyBlogList)
+    assert.deepStrictEqual(result, undefined)
+  })
+
+  test('when list has only one blog, equals that author and likes', () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+    assert.deepStrictEqual(result, {author: 'Edsger W. Dijkstra', likes: 5})
+  })
+
+  test('of a bigger list is found right', () => {
+    const result = listHelper.mostLikes(blogs)
+    console.log(result)
+    assert.deepStrictEqual(result, {author: 'Edsger W. Dijkstra', likes: 17})
   })
 })
