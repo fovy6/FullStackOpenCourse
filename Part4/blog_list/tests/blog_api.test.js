@@ -27,6 +27,26 @@ test('id property is named correctly', async () => {
   })
 })
 
+test('a valid blog can be added', async () => {
+  const numberOfBlogsAtStart = (await api.get('/api/blogs')).body.length
+
+  const newBlog = {
+    title: 'Test Blog',
+    author: 'Test Author',
+    url: 'http://testblog.com',
+    likes: 1
+  }
+
+  const response = await api.post('/api/blogs').send(newBlog).expect(201)
+  const numberOfBlogsAtEnd = (await api.get('/api/blogs')).body.length
+
+  assert.strictEqual(numberOfBlogsAtEnd, numberOfBlogsAtStart + 1)
+  assert.strictEqual(response.body.title, newBlog.title)
+  assert.strictEqual(response.body.author, newBlog.author)
+  assert.strictEqual(response.body.url, newBlog.url)
+  assert.strictEqual(response.body.likes, newBlog.likes)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
