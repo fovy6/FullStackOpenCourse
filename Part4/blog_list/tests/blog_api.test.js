@@ -1,10 +1,21 @@
-const { test, after } = require('node:test')
+const { test, after, beforeEach } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const Blog = require('../models/blog')
+const helper= require('./test_helper')
 const app = require('../app')
 
 const api = supertest(app)
+
+beforeEach(async () => {
+  await Blog.deleteMany({})
+
+  const blogObject = helper.initialBlogs.map(blog => new Blog(blog))
+  const promiseArray = blogObject.map(blog => blog.save())
+
+  await Promise.all(promiseArray)
+})
 
 test('blogs are returned as json', async () => {
   await api
@@ -16,7 +27,7 @@ test('blogs are returned as json', async () => {
 test('correct number of blogs is returned', async () => {
   const response = await api.get('/api/blogs')
 
-  assert.strictEqual(response.body.length, 2)
+  assert.strictEqual(response.body.length, helper.initialBlogs.length)
 })
 
 test('id property is named correctly', async () => {
@@ -28,8 +39,6 @@ test('id property is named correctly', async () => {
 })
 
 test('a valid blog can be added', async () => {
-  const numberOfBlogsAtStart = (await api.get('/api/blogs')).body.length
-
   const newBlog = {
     title: 'Test Blog',
     author: 'Test Author',
@@ -37,14 +46,26 @@ test('a valid blog can be added', async () => {
     likes: 1
   }
 
-  const response = await api.post('/api/blogs').send(newBlog).expect(201)
-  const numberOfBlogsAtEnd = (await api.get('/api/blogs')).body.length
+  const response = await api.post('/api/blogs').send(newBlog).expect(201).expect('Content-Type', /application\/json/)
+  const BlogsAtEnd = await helper.blogsInDb()
 
-  assert.strictEqual(numberOfBlogsAtEnd, numberOfBlogsAtStart + 1)
+  assert.strictEqual(BlogsAtEnd.length, helper.initialBlogs.length + 1)
   assert.strictEqual(response.body.title, newBlog.title)
   assert.strictEqual(response.body.author, newBlog.author)
   assert.strictEqual(response.body.url, newBlog.url)
   assert.strictEqual(response.body.likes, newBlog.likes)
+})
+
+test('if likes property is missing, it defaults to 0', async () => {
+  const newBlog = {
+    title: 'Blog without likes',
+    author: 'Author',
+    url: 'http://blogwithoutlikes.com'
+  }
+
+  const response = await api.post('/api/blogs').send(newBlog).expect(201)
+
+  assert.strictEqual(response.body.likes, 0)
 })
 
 after(async () => {
