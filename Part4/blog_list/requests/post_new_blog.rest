@@ -1,9 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImV4YW1wbGV1c2VyIiwiaWQiOiI2OTkyZjgxNjM4NThlZmU4OGFmYmNmZTgiLCJpYXQiOjE3NzEyNTIyMTB9.VIsButV3PErrnMm_hmbWGQypEhADLmBpyxSeqnUK4F8
 
 {
-  "title": "Example Title",
-  "author": "Example Author",
-  "url": "http://example.com",
-  "likes": 0
+  "title": "Check Login Example Title",
+  "author": "Check Login Example Author",
+  "url": "http://checkloginexample.com",
+  "likes": 7
 }
