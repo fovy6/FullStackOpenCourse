@@ -12,7 +12,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   const user = request.user
 
   if (!user) {
-    return response.status(400).json({ error: 'UserId missing or not valid' })
+    return response.status(401).json({ error: 'Unauthorized' })
   }
   if (body.likes === undefined) {
     body.likes = 0
