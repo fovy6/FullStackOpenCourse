@@ -6,8 +6,9 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  // const [newBlog, setNewBlog] = useState('')
-  // const [showAll, setShowAll] = useState(true)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
@@ -91,6 +92,51 @@ const App = () => {
     </div>
   }
 
+  const handleNewBlog = async (event) => {
+    event.preventDefault()
+    
+    const blogObject = {
+      title: title,
+      author: author,
+      url: url,
+    }
+
+    await blogService.create(blogObject)
+    setBlogs(await blogService.getAll())
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+  }
+
+  const blogForm = () => (
+    <div>
+      <h2>create new</h2>
+      <form onSubmit={handleNewBlog}>
+        <div>
+          title:
+          <input
+            type="text"
+            value={title}
+            onChange={({ target }) => setTitle(target.value)}
+          /><br />
+          author:
+          <input
+            type="text"
+            value={author}
+            onChange={({ target }) => setAuthor(target.value)}
+          /><br />
+          url:
+          <input
+            type="text"
+            value={url}
+            onChange={({ target }) => setUrl(target.value)}
+          />
+        </div>
+        <button type="submit">create</button><br /><br />
+      </form>
+    </div>
+  )
+
   return (
     <div>
       {!user && loginForm()}
@@ -103,6 +149,7 @@ const App = () => {
           </p>
         </div>
       )}
+      {user && blogForm()}
       {user && showAllBlogs()}
     </div>
   )
