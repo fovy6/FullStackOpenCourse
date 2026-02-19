@@ -9,6 +9,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [alertMessage, setAlertMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
@@ -41,7 +42,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch {
-      setErrorMessage('wrong credentials')
+      setErrorMessage('wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -103,6 +104,10 @@ const App = () => {
 
     await blogService.create(blogObject)
     setBlogs(await blogService.getAll())
+    setAlertMessage(`a new blog ${title} by ${author} added`)
+    setTimeout(() => {
+      setAlertMessage(null)
+    }, 5000)
     setTitle('')
     setAuthor('')
     setUrl('')
@@ -143,6 +148,7 @@ const App = () => {
       {user && (
         <div>
           <h2>blogs</h2>
+          <Notification alertMessage={alertMessage} />
           <p> 
             {user.name} logged in
             <button onClick={handleLogout}>logout</button>
