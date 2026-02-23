@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
-import BlogFormToggle from './components/BlogFormToggle'
+import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -100,13 +100,13 @@ const App = () => {
           <h2>blogs</h2>
           <Notification alertMessage={alertMessage} />
           <p> 
-            {user.name} logged in
+            {user.name} logged in&nbsp;
             <button onClick={handleLogout}>logout</button>
           </p>
         </div>
       )}
       {user && (
-        <BlogFormToggle 
+        <BlogForm 
           blogService={blogService} 
           setBlogs={setBlogs} 
           setAlertMessage={setAlertMessage} 
