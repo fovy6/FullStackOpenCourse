@@ -7,15 +7,12 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [alertMessage, setAlertMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null) 
-  const [blogFormVisible, setBlogFormVisible] = useState(false)
+  
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -95,26 +92,6 @@ const App = () => {
     </div>
   }
 
-  const handleNewBlog = async (event) => {
-    event.preventDefault()
-    
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url,
-    }
-
-    await blogService.create(blogObject)
-    setBlogs(await blogService.getAll())
-    setAlertMessage(`a new blog ${title} by ${author} added`)
-    setTimeout(() => {
-      setAlertMessage(null)
-    }, 5000)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-  }
-
   return (
     <div>
       {!user && loginForm()}
@@ -129,16 +106,10 @@ const App = () => {
         </div>
       )}
       {user && (
-        <BlogFormToggle
-          blogFormVisible={blogFormVisible}
-          setBlogFormVisible={setBlogFormVisible}
-          handleNewBlog={handleNewBlog}
-          title={title}
-          setTitle={setTitle}
-          author={author}
-          setAuthor={setAuthor}
-          url={url}
-          setUrl={setUrl}
+        <BlogFormToggle 
+          blogService={blogService} 
+          setBlogs={setBlogs} 
+          setAlertMessage={setAlertMessage} 
         />
       )}
       {user && showAllBlogs()}
