@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import BlogFormToggle from './components/BlogFormToggle'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -14,6 +15,7 @@ const App = () => {
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null) 
+  const [blogFormVisible, setBlogFormVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -113,35 +115,6 @@ const App = () => {
     setUrl('')
   }
 
-  const blogForm = () => (
-    <div>
-      <h2>create new</h2>
-      <form onSubmit={handleNewBlog}>
-        <div>
-          title:
-          <input
-            type="text"
-            value={title}
-            onChange={({ target }) => setTitle(target.value)}
-          /><br />
-          author:
-          <input
-            type="text"
-            value={author}
-            onChange={({ target }) => setAuthor(target.value)}
-          /><br />
-          url:
-          <input
-            type="text"
-            value={url}
-            onChange={({ target }) => setUrl(target.value)}
-          />
-        </div>
-        <button type="submit">create</button><br /><br />
-      </form>
-    </div>
-  )
-
   return (
     <div>
       {!user && loginForm()}
@@ -155,7 +128,19 @@ const App = () => {
           </p>
         </div>
       )}
-      {user && blogForm()}
+      {user && (
+        <BlogFormToggle
+          blogFormVisible={blogFormVisible}
+          setBlogFormVisible={setBlogFormVisible}
+          handleNewBlog={handleNewBlog}
+          title={title}
+          setTitle={setTitle}
+          author={author}
+          setAuthor={setAuthor}
+          url={url}
+          setUrl={setUrl}
+        />
+      )}
       {user && showAllBlogs()}
     </div>
   )
