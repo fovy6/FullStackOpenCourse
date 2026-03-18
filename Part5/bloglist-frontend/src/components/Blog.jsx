@@ -28,7 +28,15 @@ const Blog = ({ blog, setBlogs }) => {
     await blogService.update(blog.id, blogObject)
     setBlogs(await blogService.getAll())
   }
-  
+
+  const handleDelete = async (event) => {
+    event.preventDefault()
+
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+      await blogService.remove(blog.id)
+      setBlogs(await blogService.getAll())
+    }
+  }  
 
   return (
     <div style={blogStyle}>
@@ -41,6 +49,9 @@ const Blog = ({ blog, setBlogs }) => {
           <p>{blog.url}</p>
           <p>likes {blog.likes} <button onClick={handleLike}>like</button></p>
           <p>{blog.user.name}</p>
+          {blog.author === blog.user.name && (
+            <button onClick={handleDelete}>delete</button>
+          )}
         </span>
     </div>  
   )
