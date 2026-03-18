@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 import { expect } from 'vitest'
 
+vi.mock('../services/blogs')
+
 test('renders title and author, but not url or likes by default', () => {
   const blog = {
     title: 'Component testing is done with react-testing-library',
@@ -46,4 +48,30 @@ test('renders url and likes when the view button is clicked', async () => {
 
   expect(screen.getByText('https://fullstackopen.com/en/part5')).toBeDefined()
   expect(screen.getByText('likes 10')).toBeDefined()
+})
+
+test('clicking the like button twice calls event handler twice', async () => {
+  const blog = {
+    title: 'Component testing is done with react-testing-library',
+    author: 'Full Stack Open',
+    url: 'https://fullstackopen.com/en/part5',
+    likes: 10,
+    user: {
+      name: 'Test User'
+    }
+  }
+
+  const mockSetBlogs = vi.fn()
+
+  render(<Blog blog={blog} setBlogs={mockSetBlogs} />)
+
+  const user = userEvent.setup()
+  const viewButton = screen.getByText('view')
+  await user.click(viewButton)
+
+  const likeButton = screen.getByText('like')
+  await user.click(likeButton)
+  await user.click(likeButton)
+
+  expect(mockSetBlogs).toHaveBeenCalledTimes(2)
 })
