@@ -11,9 +11,6 @@ const Blog = ({ blog, setBlogs }) => {
   }
   const [blogDetailsVisible, setBlogDetailsVisible] = useState(false)
 
-  const hideWhenVisible = { display: blogDetailsVisible ? 'none' : '' }
-  const showWhenVisible = { display: blogDetailsVisible ? '' : 'none' }
-
   const handleLike = async (event) => {
     event.preventDefault()
 
@@ -39,20 +36,22 @@ const Blog = ({ blog, setBlogs }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       {blog.title} {blog.author}&nbsp;
-      <span style={hideWhenVisible}>
+      {!blogDetailsVisible && (
         <button onClick={() => setBlogDetailsVisible(true)}>view</button>
-      </span>
-      <span style={showWhenVisible}>
-        <button onClick={() => setBlogDetailsVisible(false)}>hide</button>
-        <p>{blog.url}</p>
-        <p>likes {blog.likes} <button onClick={handleLike}>like</button></p>
-        <p>{blog.user.name}</p>
-        {blog.author === blog.user.name && (
-          <button onClick={handleDelete}>delete</button>
-        )}
-      </span>
+      )}
+      {blogDetailsVisible && (
+        <span>
+          <button onClick={() => setBlogDetailsVisible(false)}>hide</button>
+          <p>{blog.url}</p>
+          <p>likes {blog.likes} <button onClick={handleLike}>like</button></p>
+          <p>{blog.user.name}</p>
+          {blog.author === blog.user.name && (
+            <button onClick={handleDelete}>delete</button>
+          )}
+        </span>
+      )}
     </div>
   )
 }
