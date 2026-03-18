@@ -2,10 +2,10 @@ import { useState } from 'react'
 import Togglable from './Togglable'
 
 const BlogForm = ({
-    blogService, 
-    setBlogs, 
-    setAlertMessage
-  }) => {
+  blogService,
+  setBlogs,
+  setAlertMessage
+}) => {
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -13,7 +13,7 @@ const BlogForm = ({
 
   const handleNewBlog = async (event) => {
     event.preventDefault()
-    
+
     const blogObject = {
       title: title,
       author: author,
@@ -30,36 +30,36 @@ const BlogForm = ({
     setAuthor('')
     setUrl('')
   }
-  
+
   return (
-  <div>
-    <Togglable buttonLabel="create new blog" cancelLabel="cancel">
-      <h2>create new</h2>
-      <form onSubmit={handleNewBlog}>
-        <div>
+    <div>
+      <Togglable buttonLabel="create new blog" cancelLabel="cancel">
+        <h2>create new</h2>
+        <form onSubmit={handleNewBlog}>
+          <div>
           title:
-          <input
-            type="text"
-            value={title}
-            onChange={({ target }) => setTitle(target.value)}
-          /><br />
+            <input
+              type="text"
+              value={title}
+              onChange={({ target }) => setTitle(target.value)}
+            /><br />
           author:
-          <input
-            type="text"
-            value={author}
-            onChange={({ target }) => setAuthor(target.value)}
-          /><br />
+            <input
+              type="text"
+              value={author}
+              onChange={({ target }) => setAuthor(target.value)}
+            /><br />
           url:
-          <input
-            type="text"
-            value={url}
-            onChange={({ target }) => setUrl(target.value)}
-          />
-        </div>
-      <button type="submit">create</button>
-    </form>
-    </Togglable>
-  </div>
+            <input
+              type="text"
+              value={url}
+              onChange={({ target }) => setUrl(target.value)}
+            />
+          </div>
+          <button type="submit">create</button>
+        </form>
+      </Togglable>
+    </div>
   )
 }
 

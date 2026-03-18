@@ -9,15 +9,15 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [alertMessage, setAlertMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null) 
-  
+  const [user, setUser] = useState(null)
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const App = () => {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -82,13 +82,13 @@ const App = () => {
         <button type="submit">login</button>
       </form>
     </div>
-    )
-  
+  )
+
   const showAllBlogs = () => {
     const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
     return <div>
       {sortedBlogs.map(blog =>
-      <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />
+        <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />
       )}
     </div>
   }
@@ -100,17 +100,17 @@ const App = () => {
         <div>
           <h2>blogs</h2>
           <Notification alertMessage={alertMessage} />
-          <p> 
+          <p>
             {user.name} logged in&nbsp;
             <button onClick={handleLogout}>logout</button>
           </p>
         </div>
       )}
       {user && (
-        <BlogForm 
-          blogService={blogService} 
-          setBlogs={setBlogs} 
-          setAlertMessage={setAlertMessage} 
+        <BlogForm
+          blogService={blogService}
+          setBlogs={setBlogs}
+          setAlertMessage={setAlertMessage}
         />
       )}
       {user && showAllBlogs()}

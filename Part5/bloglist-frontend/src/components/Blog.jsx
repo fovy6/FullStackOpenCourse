@@ -16,7 +16,7 @@ const Blog = ({ blog, setBlogs }) => {
 
   const handleLike = async (event) => {
     event.preventDefault()
-    
+
     const blogObject = {
       title: blog.title,
       author: blog.author,
@@ -36,24 +36,24 @@ const Blog = ({ blog, setBlogs }) => {
       await blogService.remove(blog.id)
       setBlogs(await blogService.getAll())
     }
-  }  
+  }
 
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author}&nbsp;
       <span style={hideWhenVisible}>
-          <button onClick={() => setBlogDetailsVisible(true)}>view</button>
+        <button onClick={() => setBlogDetailsVisible(true)}>view</button>
       </span>
-        <span style={showWhenVisible}>
-          <button onClick={() => setBlogDetailsVisible(false)}>hide</button>
-          <p>{blog.url}</p>
-          <p>likes {blog.likes} <button onClick={handleLike}>like</button></p>
-          <p>{blog.user.name}</p>
-          {blog.author === blog.user.name && (
-            <button onClick={handleDelete}>delete</button>
-          )}
-        </span>
-    </div>  
+      <span style={showWhenVisible}>
+        <button onClick={() => setBlogDetailsVisible(false)}>hide</button>
+        <p>{blog.url}</p>
+        <p>likes {blog.likes} <button onClick={handleLike}>like</button></p>
+        <p>{blog.user.name}</p>
+        {blog.author === blog.user.name && (
+          <button onClick={handleDelete}>delete</button>
+        )}
+      </span>
+    </div>
   )
 }
 
