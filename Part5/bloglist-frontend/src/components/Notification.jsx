@@ -10,14 +10,14 @@ const Notification = ({ alertMessage, errorMessage }) => {
 
   if (errorMessage) {
     return (
-      <div style={{ ...baseStyle, color: 'red' }}>
+      <div className="error" style={{ ...baseStyle, color: 'red' }}>
         {errorMessage}
       </div>
     )
   }
   if (alertMessage) {
     return (
-      <div style={{ ...baseStyle, color: 'green' }}>
+      <div className="alert" style={{ ...baseStyle, color: 'green' }}>
         {alertMessage}
       </div>
     )
